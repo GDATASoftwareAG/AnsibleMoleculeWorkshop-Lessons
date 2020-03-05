@@ -1,0 +1,31 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+    - name: Ensure packages
+      apt:
+        name:
+          - python
+          - apt-utils
+          - ca-certificates
+          - iproute2
+          - curl
+          - apt-transport-https
+          - software-properties-common
+          - python-pip
+          - sudo
+          - bash
+        state: present
+        force: true
+
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_platform: true
+        docker_install_compose: false

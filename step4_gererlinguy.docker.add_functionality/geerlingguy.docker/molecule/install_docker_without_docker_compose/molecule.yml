@@ -3,10 +3,6 @@ dependency:
   name: galaxy
 driver:
   name: docker
-lint: |
-  yamllint .
-  ansible-lint .
-  flake8
 platforms:
   - name: instance
     image: "geerlingguy/docker-ubuntu1804-ansible:latest"
@@ -17,7 +13,10 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
-scenario:
-  name: default
+  options:
+    vvv: true
+  config_options:
+    defaults:
+      interpreter_python: /usr/bin/python3
 verifier:
   name: testinfra

@@ -1,6 +1,7 @@
 ---
 - name: Converge
   hosts: all
+  become: true
 
   pre_tasks:
     - name: Update apt cache.
@@ -16,5 +17,3 @@
 
   roles:
     - role: geerlingguy.docker
-      vars:
-        docker_install_compose: false
