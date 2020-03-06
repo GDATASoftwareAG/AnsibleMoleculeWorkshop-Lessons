@@ -11,16 +11,7 @@
     - name: Ensure packages
       apt:
         name:
-          - python
           - apt-utils
-          - ca-certificates
-          - iproute2
-          - curl
-          - apt-transport-https
-          - software-properties-common
-          - python-pip
-          - sudo
-          - bash
         state: present
         force: true
 
