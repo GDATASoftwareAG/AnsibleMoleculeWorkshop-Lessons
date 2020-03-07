@@ -1,0 +1,20 @@
+image: docker:19.03.4-dind
+
+before_script:
+  - docker info
+
+lesson1:
+  stage: test
+  variables:
+    MOLECULE_DISTRO: centos7
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson1_initialized_role/empty_role \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test -s default --parallel"
