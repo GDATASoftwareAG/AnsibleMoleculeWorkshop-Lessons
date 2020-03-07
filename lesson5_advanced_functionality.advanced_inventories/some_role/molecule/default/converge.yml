@@ -1,0 +1,38 @@
+---
+- name: Converge
+  hosts: manager
+  serial: 1
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+    - name: Ensure packages
+      apt:
+        name:
+          - apt-utils
+        state: present
+        force: true
+
+  tasks:
+    - name: "Include some_role"
+      include_role:
+        name: "some_role"
+
+- name: Converge
+  hosts: worker
+  serial: 1
+
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+    - name: Ensure packages
+      apt:
+        name:
+          - apt-utils
+        state: present
+        force: true
+
+  tasks:
+    - name: "Include some_role"
+      include_role:
+        name: "some_role"

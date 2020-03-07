@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: node1
+    image: "geerlingguy/docker-ubuntu1804-ansible:latest"
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - manager
+  - name: node2
+    image: "geerlingguy/docker-ubuntu1804-ansible:latest"
+    command: /sbin/init
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - worker
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      interpreter_python: /usr/bin/python3
+verifier:
+  name: testinfra

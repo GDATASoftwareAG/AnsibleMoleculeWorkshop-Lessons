@@ -1,0 +1,5 @@
+---
+- include_tasks: manager.yml
+  when: "'manager' in group_names"
+- include_tasks: worker.yml
+  when: "'worker' in group_names"

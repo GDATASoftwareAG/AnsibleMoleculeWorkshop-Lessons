@@ -1,0 +1,9 @@
+- name: register docker info
+  shell: docker info
+  register: docker_info
+  changed_when: false
+- name: "join as a worker"
+  shell: "docker swarm join --token {{hostvars['DOCKER_SWARM_TOKEN_HOLDER']['worker_token']}} {{hostvars['DOCKER_SWARM_TOKEN_HOLDER']['ip']}}:2377"
+  when: "docker_info.stdout.find('Swarm: inactive') != -1"
+  retries: 3
+  delay: 20

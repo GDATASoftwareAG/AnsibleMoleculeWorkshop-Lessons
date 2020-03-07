@@ -1,0 +1,27 @@
+- name: register docker info
+  shell: docker info
+  register: docker_info
+  changed_when: false
+- name: initialize the swarm
+  shell: docker swarm init --advertise-addr {{ansible_default_ipv4.address}}
+  when:
+  - "docker_info.stdout.find('Swarm: inactive') != -1"
+  - "not hostvars['DOCKER_SWARM_TOKEN_HOLDER']"
+- name: "get docker swarm worker token"
+  shell: docker swarm join-token -q worker
+  register: worker_token
+  changed_when: false
+- name: "get docker swarm worker token"
+  shell: docker swarm join-token -q manager
+  register: manager_token
+  changed_when: false
+- name: add token-holder
+  add_host:
+    name: DOCKER_SWARM_TOKEN_HOLDER
+    groups: ANSIBLE_DUMMY_HOSTS
+    worker_token: "{{worker_token.stdout}}"
+    manager_token: "{{manager_token.stdout}}"
+    ip: "{{ansible_default_ipv4.address}}"
+  when:
+  - "not hostvars['DOCKER_SWARM_TOKEN_HOLDER']"
+  changed_when: false
