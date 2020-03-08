@@ -4,6 +4,8 @@ before_script:
   - docker info
 
 lesson1:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
@@ -18,6 +20,8 @@ lesson1:
         /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
 
 lesson2_empty:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
@@ -32,6 +36,8 @@ lesson2_empty:
         /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
 
 lesson2_add_tests:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
@@ -46,6 +52,8 @@ lesson2_add_tests:
         /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
 
 lesson3:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
@@ -60,6 +68,8 @@ lesson3:
         /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
 
 lesson4:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
@@ -74,6 +84,8 @@ lesson4:
         /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel
 
 lesson5:
+  tags:
+    - molecule-workshop
   stage: test
   script:
     - pwd
