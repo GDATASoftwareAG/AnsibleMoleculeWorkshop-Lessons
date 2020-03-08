@@ -1,8 +1,8 @@
-# Molecule workshop steps
+# Molecule workshop lessons
 
 Here you find the lessons where we start the parts of our workshops from.
 
-Most of the steps are also the target of their previous step.
+Most of the lessons are also the target of their previous lessons.
 
 * [Lesson 1](./LESSON1.md)
 * [Lesson 2](./LESSON2.md)
