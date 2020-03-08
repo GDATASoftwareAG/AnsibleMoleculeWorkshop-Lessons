@@ -1,16 +1,23 @@
-## Lesson 1: Initialize a role and pass a test
+# Lesson 1: Initialize a role and pass a test
+
+[home](./README.md)
+[next](./LESSON2.md)
 
 To get the workshop going, we start with a rather simple task by just initializing a molecule test and pass the tests.
 
 You can play around with it, by editing for example some boolean values and see how the linter kicks in.
 
-### Initialize
+## Initialize
 
 ```
 docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra rolename"
 ```
 
-### Edit
+## copy the .yamllint
+
+copy the .yamllint from `lesson2_geerlingguy.docker.add_tests/geelingguy.docker/molecule/default`
+
+## Edit
 
 To get the linting going just add this to your molecule/molecule.yml
 
@@ -39,7 +46,7 @@ We also like the truthy check, so remove this line, from your molecule/default/.
   truthy: disable
 ```
 
-### Run the test
+## Run the test
 
 ```
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test"

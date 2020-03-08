@@ -26,5 +26,5 @@
 - include_tasks: docker-users.yml
   when: docker_users | length > 0
 
-- include_tasks: deploy-platform-container-custom.yml
+- include_tasks: deploy-platform-container.yml
   when: docker_platform | bool
