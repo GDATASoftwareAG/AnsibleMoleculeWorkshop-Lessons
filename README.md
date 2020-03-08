@@ -4,6 +4,12 @@ Here you find the lessons where we start the parts of our workshops from.
 
 Most of the steps are also the target of their previous step.
 
+* [Lesson 1](./LESSON1.md)
+* [Lesson 2](./LESSON2.md)
+* [Lesson 3](./LESSON3.md)
+* [Lesson 4](./LESSON4.md)
+* [Lesson 5](./LESSON5.md)
+
 ## Links
 
 * [molecule documentation](https://molecule.readthedocs.io/en/latest/)
@@ -28,13 +34,6 @@ then run in a role directory
 ```
 docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test -s default"
 ```
-
-* [Lesson 1](./LESSON1.md)
-* [Lesson 2](./LESSON2.md)
-* [Lesson 3](./LESSON3.md)
-* [Lesson 4](./LESSON4.md)
-* [Lesson 5](./LESSON5.md)
-
 
 ## you want to give us your power for the workshop?
 
