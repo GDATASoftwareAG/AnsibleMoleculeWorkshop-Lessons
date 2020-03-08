@@ -56,3 +56,20 @@ docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.
 ```
 docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_without_docker_compose"
 ```
+
+## you want to give us your power for the workshop?
+
+
+```
+docker run -d --rm --name gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock -v /home/gitlab-runner:/home/gitlab-runner -v /buiilds:/builds --privileged    gitlab/gitlab-runner:latest
+```
+
+```
+docker exec -it gitlab-runner /bin/bash
+```
+
+```
+gitlab-runner register -n   --url https://gitlab.com/   --registration-token GZqpz8aRxUqiY3FsNqAz   --executor docker   --description "MYRUNNERNAME"   --docker-image "docker:19.03.1"  --docker-volumes /var/run/docker.sock:/var/run/docker.sock --docker-volumes /home/gitlab-runner:/home/gitlab-runner --docker-volumes /builds:/builds --tag-list molecule-workshop
+```
+
+This registeres a gitlab-runner on your local machine that can be used in the workshop. This is for careful use and should be killed after the workshop.
