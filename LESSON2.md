@@ -1,8 +1,8 @@
 # Lesson 2: Add a test to an existing role
 
-[home](./README.md)
-[back](./LESSON1.md)
-[next](./LESSON3.md)
+* [home](./README.md)
+* [back](./LESSON1.md)
+* [next](./LESSON3.md)
 
 * add linting to the default test
 * add a testinfra test to check if docker compose gets installed

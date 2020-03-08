@@ -1,7 +1,7 @@
 # Lesson 1: Initialize a role and pass a test
 
-[home](./README.md)
-[next](./LESSON2.md)
+* [home](./README.md)
+* [next](./LESSON2.md)
 
 To get the workshop going, we start with a rather simple task by just initializing a molecule test and pass the tests.
 

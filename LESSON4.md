@@ -1,8 +1,8 @@
 # Lesson 4: dependend roles
 
-[home](./README.md)
-[back](./LESSON3.md)
-[next](./LESSON5.md)
+* [home](./README.md)
+* [back](./LESSON3.md)
+* [next](./LESSON5.md)
 
 
 ## Initialize
@@ -10,7 +10,7 @@
 start with a new role
 
 ```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra rolename"
+docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra some_role"
 ```
 
 ## edit
@@ -88,7 +88,7 @@ def test_platform_running(host):
 
 dont forget to edit the playbook or otherwise the docker role will not work `molecule/default/converge.yml`
 
-```
+```yaml
 ---
 - name: Converge
   hosts: all

@@ -1,8 +1,8 @@
 # Lesson 3: Add functionality to a role
 
-[home](./README.md)
-[back](./LESSON2.md)
-[next](./LESSON4.md)
+* [home](./README.md)
+* [back](./LESSON2.md)
+* [next](./LESSON4.md)
 
 ## start
 
