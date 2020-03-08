@@ -9,8 +9,12 @@ You can play around with it, by editing for example some boolean values and see 
 
 ## Initialize
 
-```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra rolename"
+```bash
+docker run \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \ 
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "molecule init role --verifier-name testinfra rolename"
 ```
 
 ## copy the .yamllint
@@ -42,13 +46,17 @@ galaxy_info:
 
 We also like the truthy check, so remove this line, from your molecule/default/.yamlint.yml
 
-```
+```yaml
   truthy: disable
 ```
 
 ## Run the test
 
-```
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test"
-
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \ 
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test"
 ```

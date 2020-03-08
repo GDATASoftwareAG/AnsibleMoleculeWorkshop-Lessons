@@ -73,8 +73,12 @@ def test_for_docker_engine(host):
 
 ## Initialize a new scenario
 
-```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_without_docker_compose"
+```bash
+docker run \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_without_docker_compose"
 ```
 
 ## write the test
@@ -112,7 +116,11 @@ def test_docker_compose_working(host):
 
 ## Run the test
 
-```
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test --all"
-
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test --all"
 ```

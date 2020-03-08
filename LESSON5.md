@@ -7,8 +7,12 @@
 
 start with a new role
 
-```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra some_role"
+```bash
+docker run \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "molecule init role --verifier-name testinfra some_role"
 ```
 
 ## edit
@@ -138,7 +142,10 @@ def test_platform_running(host):
 
 ## Run the test
 
-```
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test --all"
-
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test --all"
 ```

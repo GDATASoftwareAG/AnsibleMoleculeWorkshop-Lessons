@@ -9,8 +9,12 @@
 
 start with a new role
 
-```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init role --verifier-name testinfra some_role"
+```bash
+docker run \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "molecule init role --verifier-name testinfra some_role"
 ```
 
 ## edit
@@ -111,7 +115,10 @@ dont forget to edit the playbook or otherwise the docker role will not work `mol
 
 ## Run the test
 
-```
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test --all"
-
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test --all"
 ```

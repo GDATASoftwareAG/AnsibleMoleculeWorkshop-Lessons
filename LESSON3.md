@@ -10,8 +10,12 @@ go on with your result from lesson to or copy the `lesson2_geelingguy.docker.add
 
 ## Initialize
 
-```
-docker run  -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_with_platform_container"
+```bash
+docker run \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_with_platform_container"
 ```
 
 ## edit
@@ -110,7 +114,11 @@ def test_platform_running(host):
 
 ## Run the test
 
-```
-docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):$(pwd) -w $(pwd) --user root quay.io/ansible/molecule:3.0.2 /bin/sh -c "pip3 install testinfra; molecule test --all"
-
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test --all"
 ```
