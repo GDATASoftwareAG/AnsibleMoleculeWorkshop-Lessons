@@ -81,7 +81,7 @@ lesson4:
         --workdir $(pwd)/lesson4_advanced_functionality.dependend_roles/some_role \
         --user root \
         quay.io/ansible/molecule:3.0.2 \
-        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
 
 lesson5:
   tags:
@@ -97,4 +97,4 @@ lesson5:
         --workdir $(pwd)/lesson5_advanced_functionality.advanced_inventories/some_role \
         --user root \
         quay.io/ansible/molecule:3.0.2 \
-        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
