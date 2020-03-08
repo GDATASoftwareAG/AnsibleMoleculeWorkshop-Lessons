@@ -5,8 +5,6 @@ before_script:
 
 lesson1:
   stage: test
-  variables:
-    MOLECULE_DISTRO: centos7
   script:
     - pwd
     - ls -lha
@@ -17,4 +15,74 @@ lesson1:
         --workdir $(pwd)/lesson1_initialized_role/empty_role \
         --user root \
         quay.io/ansible/molecule:3.0.2 \
-        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test -s default --parallel"
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
+
+lesson2_empty:
+  stage: test
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson2_geerlingguy.docker/geerlingguy.docker \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
+
+lesson2_add_tests:
+  stage: test
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson2_gererlinguy.docker.add_tests/geerlingguy.docker \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
+
+lesson3:
+  stage: test
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson3_gererlinguy.docker.add_functionality/geerlingguy.docker \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel"
+
+lesson4:
+  stage: test
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson4_advanced_functionality.dependend_roles/some_role \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel
+
+lesson5:
+  stage: test
+  script:
+    - pwd
+    - ls -lha
+    - |
+      docker run \
+        --volume /var/run/docker.sock:/var/run/docker.sock \
+        --volume $(pwd):$(pwd) \
+        --workdir $(pwd)/lesson5_advanced_functionality.advanced_inventories/some_role \
+        --user root \
+        quay.io/ansible/molecule:3.0.2 \
+        /bin/sh -c "ls -lha && pip3 install testinfra && molecule test --all --parallel
