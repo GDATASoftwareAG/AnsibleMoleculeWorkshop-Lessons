@@ -3,6 +3,9 @@ dependency:
   name: galaxy
 driver:
   name: docker
+lint: |
+  set -e
+  flake8
 platforms:
   - name: instance
     image: "geerlingguy/docker-ubuntu1804-ansible:latest"

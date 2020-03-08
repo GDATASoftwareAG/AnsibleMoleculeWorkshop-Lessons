@@ -1,2 +1,2 @@
 ---
-# defaults file for empty_role
+do_something: true
