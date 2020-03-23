@@ -4,10 +4,9 @@
 * [back](./LESSON3.md)
 * [next](./LESSON5.md)
 
-
 ## Initialize
 
-start with a new role
+Start with a new role in a new directory.
 
 ```bash
 docker run \
@@ -17,9 +16,11 @@ docker run \
   /bin/sh -c "molecule init role --verifier-name testinfra some_role"
 ```
 
-## edit
+`cd` into the directory `cd some_role`
 
-create a custom fact and place it here `files/docker_containers.fact`
+## Edit
+
+Create a custom fact and place it here `files/docker_containers.fact`
 
 ```bash
 #!/bin/bash
@@ -27,21 +28,30 @@ create a custom fact and place it here `files/docker_containers.fact`
 echo "[ $(docker ps --all --format "{{json .Names}},") ]" | sed "s#, ]# ]#g"
 ```
 
-configure dependency `meta/main.yml`
+Configure dependency `meta/main.yml`
 
 ```yaml
+---
+galaxy_info:
+  author: me
+  description: myrole
+  company: mycompany
+  license: MIT
+  min_ansible_version: 2.8
+  platforms:
+    - name: ubuntu
 dependencies:
   - name: geerlingguy.docker
 ```
 
-let molecule auto download the dependency by adding it to `molecule/default/requirements.yml`
+Let molecule auto download the dependency by adding it to `molecule/default/requirements.yml`
 
 ```yaml
 ---
 - name: geerlingguy.docker
 ```
 
-add your tasks from lesson 3 directly into the `tasks/main.yml`
+Add your tasks from lesson 3 directly into the `tasks/main.yml`
 
 ```yaml
 ---
@@ -65,7 +75,7 @@ add your tasks from lesson 3 directly into the `tasks/main.yml`
    name: python3-pip
    state: present
 
-- name: "Install docker"
+- name: "Install python dependencies"
   pip:
    name:
     - docker
@@ -79,7 +89,7 @@ add your tasks from lesson 3 directly into the `tasks/main.yml`
 
 ```
 
-write a python test `molecule/default/tests/tests_default.py`
+Write a python test `molecule/default/tests/tests_default.py`
 
 ```python
 def test_platform_running(host):
@@ -90,23 +100,22 @@ def test_platform_running(host):
     assert platform.port(8080).is_reachable
 ```
 
-dont forget to edit the playbook or otherwise the docker role will not work `molecule/default/converge.yml`
+Copy some files from the previous role.
+
+```bash
+cp ../geerlingguy.docker/molecule/default/molecule.yml molecule/default/molecule.yml
+cp ../geerlingguy.docker/molecule/install_docker_without_docker_compose/tests/conftest.py molecule/default/tests/conftest.py
+```
+
+Dont forget to edit the playbook or otherwise the docker role will not work `molecule/default/converge.yml`
 
 ```yaml
 ---
 - name: Converge
   hosts: all
-
   pre_tasks:
     - name: Update apt cache.
       apt: update_cache=yes cache_valid_time=600
-    - name: Ensure packages
-      apt:
-        name:
-          - apt-utils
-        state: present
-        force: true
-
   tasks:
     - name: "Include some_role"
       include_role:
