@@ -6,9 +6,9 @@
 
 ## start
 
-go on with your result from lesson to or copy the `lesson2_geelingguy.docker.add_tests` directory
+Go on with your result from lesson to or copy the `lesson2_geelingguy.docker.add_tests` directory.
 
-## Initialize
+## Initialize a new scenario
 
 ```bash
 docker run \
@@ -18,9 +18,17 @@ docker run \
   /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_with_platform_container"
 ```
 
-## edit
+Copy some files from the previous scenario.
 
-create a custom fact and place it here `files/docker_containers.fact`
+```bash
+cp molecule/install_docker_without_docker_compose/molecule.yml molecule/install_docker_with_platform_container/molecule.yml
+cp molecule/install_docker_without_docker_compose/tests/conftest.py molecule/install_docker_with_platform_container/tests/conftest.py
+cp molecule/install_docker_without_docker_compose/converge.yml molecule/install_docker_with_platform_container/converge.yml
+```
+
+## Edit
+
+Create a custom fact and place it here `files/docker_containers.fact`
 
 ```bash
 #!/bin/bash
@@ -28,15 +36,16 @@ create a custom fact and place it here `files/docker_containers.fact`
 echo "[ $(docker ps --all --format "{{json .Names}},") ]" | sed "s#, ]# ]#g"
 ```
 
-we want our new function to have a flag to turn it on
+We want our new function to have a flag to turn it on.
 
-add this line to `defaults/main.yml`
+Add this line to `defaults/main.yml`
+
 ```yaml
 # run a docker platform?
 docker_platform: false
 ```
 
-create a file `deploy-platform-container.yml` to the `tasks` directory
+Create a file `deploy-platform-container.yml` to the `tasks` directory
 
 ```yaml
 ---
@@ -73,7 +82,10 @@ create a file `deploy-platform-container.yml` to the `tasks` directory
   when: '"ptl-whoami" not in ansible_local.docker_containers'
 ```
 
-include that tasks by editing the `tasks/main.yml`
+Notice that you access the fact by the filename we uploaded.
+
+Include that tasks by editing the `tasks/main.yml`
+
 ```yaml
 - include_tasks: deploy-platform-container.yml
   when: docker_platform | bool
@@ -81,19 +93,26 @@ include that tasks by editing the `tasks/main.yml`
 
 ## tests
 
-you now want to edit the playbook in your new scenario `install_docker_with_platform_container`
+Now you want to edit the playbook in your new scenario `molecule/install_docker_with_platform_container/converge.yml`
 
 ```yaml
 ---
 - name: Converge
   hosts: all
-  roles:
-    - role: geerlingguy.docker
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+  tasks:
+    - name: "Include geerlingguy.docker"
+      include_role:
+        name: "geerlingguy.docker"
       vars:
         docker_install_compose: false
+        docker_platform: true
 ```
 
-and write a python test `tests/test_default.py`
+And write a python test `tests/test_default.py`
 
 ```python
 import os
