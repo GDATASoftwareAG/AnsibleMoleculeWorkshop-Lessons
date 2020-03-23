@@ -17,13 +17,55 @@ docker run \
   /bin/sh -c "molecule init role --verifier-name testinfra rolename"
 ```
 
+Now navigate into the folder of your new role.
+
+```bash
+cd rolename
+```
+
 ## copy the .yamllint
 
-copy the .yamllint from `lesson2_geerlingguy.docker.add_tests/geelingguy.docker/molecule/default`
+add a .yamllin file to folder `molecule/default/.yamllint`
+
+```yaml
+---
+# Based on ansible-lint config
+extends: default
+
+rules:
+  braces:
+    max-spaces-inside: 1
+    level: error
+  brackets:
+    max-spaces-inside: 1
+    level: error
+  colons:
+    max-spaces-after: -1
+    level: error
+  commas:
+    max-spaces-after: -1
+    level: error
+  comments: disable
+  comments-indentation: disable
+  document-start: disable
+  empty-lines:
+    max: 3
+    level: error
+  hyphens:
+    level: error
+  indentation: disable
+  key-duplicates: enable
+  line-length: disable
+  new-line-at-end-of-file: disable
+  new-lines:
+    type: unix
+  trailing-spaces: disable
+  truthy: enable
+```
 
 ## Edit
 
-To get the linting going just add this to your molecule/molecule.yml
+To get the linting going just add this to your `molecule/default/molecule.yml`
 
 ```yaml
 lint: |
@@ -40,14 +82,9 @@ galaxy_info:
   description: myrole
   company: mycompany
   license: MIT
+  min_ansible_version: 2.8
   platforms:
   - name: ubuntu
-```
-
-We also like the truthy check, so remove this line, from your molecule/default/.yamlint.yml
-
-```yaml
-  truthy: disable
 ```
 
 ## Run the test

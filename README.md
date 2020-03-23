@@ -4,6 +4,8 @@ Here you find the lessons where we start the parts of our workshops from.
 
 Most of the lessons are also the target of their previous lessons.
 
+Please start with a new folder for every lesson. Don't begin to work in the lessons folders.
+
 * [Lesson 1](./LESSON1.md)
 * [Lesson 2](./LESSON2.md)
 * [Lesson 3](./LESSON3.md)
