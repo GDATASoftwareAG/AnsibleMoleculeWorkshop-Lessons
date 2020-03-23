@@ -5,30 +5,21 @@
 
 ## Initialize
 
-start with a new role
+Start with a new role
 
 ```bash
 docker run \
   -v $(pwd):$(pwd) -w $(pwd) \
   --user root \
   quay.io/ansible/molecule:3.0.2 \
-  /bin/sh -c "molecule init role --verifier-name testinfra some_role"
+  /bin/sh -c "molecule init role --verifier-name testinfra docker.swarm"
 ```
 
-## edit
+Copy some files from the previous roles.
 
-configure dependency `meta/main.yml`
-
-```yaml
-dependencies:
-  - name: geerlingguy.docker
-```
-
-let molecule auto download the dependency by adding it to `molecule/default/requirements.yml`
-
-```yaml
----
-- name: geerlingguy.docker
+```bash
+cp ../some_role/meta/main.yml meta/main.yml
+cp ../some_role/molecule/default/requirements.yml meta/main.yml
 ```
 
 ## add tasks
@@ -46,6 +37,7 @@ let molecule auto download the dependency by adding it to `molecule/default/requ
 `tasks/manager.yml`
 
 ```yaml
+---
 - name: register docker info
   shell: docker info
   register: docker_info
@@ -78,6 +70,7 @@ let molecule auto download the dependency by adding it to `molecule/default/requ
 `tasks/worker.yml`
 
 ```yaml
+---
 - name: register docker info
   shell: docker info
   register: docker_info
@@ -89,9 +82,9 @@ let molecule auto download the dependency by adding it to `molecule/default/requ
   delay: 20
 ```
 
-## the tests
+## The tests
 
-to get the tests running you need to have a more advanced inventory `molecule/default/molecule.yml`
+To get the tests running you need to have a more advanced inventory `molecule/default/molecule.yml`
 
 ```yaml
 ---
@@ -127,7 +120,7 @@ verifier:
   name: testinfra
 ```
 
-now just get rolling by adding a test `molecule/default/tests/tests_default.py`
+Now get rolling by adding a test `molecule/default/tests/tests_default.py`
 
 ```python
 def test_platform_running(host):
@@ -138,6 +131,21 @@ def test_platform_running(host):
     if 'manager' in ansible_vars['group_names']:
         cmd = host.run('docker node ls')
         cmd.rc == 0
+```
+
+As we are still using the docker role form geerlingguy don't forget to edit the `molecule/default/converge.yml`.
+
+```yaml
+---
+- name: Converge
+  hosts: all
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+  tasks:
+    - name: "Include docker.swarm"
+      include_role:
+        name: "docker.swarm"
 ```
 
 ## Run the test
