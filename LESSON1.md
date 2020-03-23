@@ -12,7 +12,7 @@ You can play around with it, by editing for example some boolean values and see 
 ```bash
 docker run \
   -v $(pwd):$(pwd) -w $(pwd) \
-  --user root \ 
+  --user root \
   quay.io/ansible/molecule:3.0.2 \
   /bin/sh -c "molecule init role --verifier-name testinfra rolename"
 ```
@@ -55,7 +55,7 @@ We also like the truthy check, so remove this line, from your molecule/default/.
 ```bash
 docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -v $(pwd):$(pwd) -w $(pwd) \ 
+  -v $(pwd):$(pwd) -w $(pwd) \
   --user root \
   quay.io/ansible/molecule:3.0.2 \
   /bin/sh -c "pip3 install testinfra; molecule test"
