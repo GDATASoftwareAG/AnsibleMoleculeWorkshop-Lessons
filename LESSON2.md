@@ -10,14 +10,14 @@
 
 ## Initialize
 
-Copy the folder `lesson2_geerlingguy.docker`
-
+Copy the folder `lesson2_geerlingguy.docker` into a new one and `cd` into it.
 
 ## edit the existing scenario
 
-place the .yamllint you created in lesson 1 in the default directory
+Place the .yamllint you created in lesson 1 in the default directory.
 
-edit the molecule/default/molecule.yml
+edit the `molecule/default/molecule.yml`
+
 ```yaml
 ---
 dependency:
@@ -45,9 +45,9 @@ verifier:
   name: testinfra
 ```
 
-its adds lintng and testinfra test.
+It adds lintng and testinfra test.
 
-now create a tests directory in `molecule/default` and add a file `test_default.py` with content
+Now create a `tests` directory in `molecule/default` and add a file `test_default.py` with content
 
 ```python
 import os
@@ -71,6 +71,17 @@ def test_for_docker_engine(host):
     assert cmd.stdout.find("Running: 0") != -1
 ```
 
+## Run the test 1
+
+```bash
+docker run \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd):$(pwd) -w $(pwd) \
+  --user root \
+  quay.io/ansible/molecule:3.0.2 \
+  /bin/sh -c "pip3 install testinfra; molecule test --all"
+```
+
 ## Initialize a new scenario
 
 ```bash
@@ -81,24 +92,55 @@ docker run \
   /bin/sh -c "molecule init scenario --verifier-name testinfra install_docker_without_docker_compose"
 ```
 
-## write the test
+Now edit the `molecule/install_docker_without_docker_compose/molecule.yml` like this.
 
-to deactivate the docker compose installation you have to edit the playbook `install_docker_without_docker_compose/converge.yml`
+```yaml
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+  flake8
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-ubuntu1804-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+verifier:
+  name: testinfra
+```
+
+## Write the test
+
+To deactivate the docker compose installation you have to edit the playbook `molecule/install_docker_without_docker_compose/converge.yml`
 
 ```yaml
 ---
 - name: Converge
   hosts: all
-  roles:
-    - role: geerlingguy.docker
+  pre_tasks:
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+  tasks:
+    - name: "Include geerlingguy.docker"
+      include_role:
+        name: "geerlingguy.docker"
       vars:
         docker_install_compose: false
-
 ```
 
-and then add a python test `install_docker_without_dokcer_compose/tests/tests_default.py`
+Then add a python test `molecule/install_docker_without_dokcer_compose/tests/tests_default.py`
 
-`install_docker_without_docker_compose/tests/test_default.py`
 ```python
 import os
 
@@ -114,7 +156,38 @@ def test_docker_compose_working(host):
     assert cmd.rc != 0
 ```
 
-## Run the test
+## One adjustment to the generated code
+
+The `molecule/install_docker_without_dokcer_compose/tests/configtest.py` line 19 is to long.
+Just edit this file to look like this.
+
+```python
+"""PyTest Fixtures."""
+from __future__ import absolute_import
+import os
+import pytest
+
+
+def pytest_runtest_setup(item):
+    """Run tests only when under molecule with testinfra installed."""
+    try:
+        import testinfra
+    except ImportError:
+        pytest.skip("Test requires testinfra", allow_module_level=True)
+    if "MOLECULE_INVENTORY_FILE" in os.environ:
+        pytest.testinfra_hosts = testinfra.utils.ansible_runner.AnsibleRunner(
+            os.environ["MOLECULE_INVENTORY_FILE"]
+        ).get_hosts("all")
+    else:
+        pytest.skip(
+            "Test should run only from inside molecule.",
+            allow_module_level=True
+        )
+```
+
+In real world scenarios, you can discuss these linting rules. Just make sure to not waste time with meaningless disussions.
+
+## Run the test 2
 
 ```bash
 docker run \
